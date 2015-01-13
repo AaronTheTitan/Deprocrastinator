@@ -17,11 +17,10 @@
 @property NSMutableArray *userTasksArray;
 @property UITableViewCell *cell;
 
-//@property NSArray *priorityColorsArray;
+@property (strong, nonatomic) NSIndexPath *indexPathToBeDeleted;
+
 
 @property int numberOfSwipesToRight;
-
-//@property CGPoint taskTouched;
 
 @end
 
@@ -34,60 +33,42 @@
 
     self.userTasksArray = [[NSMutableArray alloc] init];
 
-//    self.priorityColorsArray = [[NSArray alloc] initWithObjects:[UIColor redColor], [UIColor yellowColor], [UIColor greenColor], nil];
-
     self.numberOfSwipesToRight = 0;
 
 
 }
 
 
-///////
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete)
+    {
+        self.indexPathToBeDeleted = indexPath;
 
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Hold Up!" message:@"Are you sure you want to delete this item.  This can't be undone" delegate:self cancelButtonTitle:@"Delete" otherButtonTitles:@"Cancel", nil];
-    [alert show];
-
-//    [alert reloadInputViews];
-//    if (editingStyle == UITableViewCellEditingStyleDelete) {
-//        [self.userTasksArray removeObjectAtIndex:indexPath.row];
-//
-//    } else {
-//        [self alertView:alert clickedButtonAtIndex:1];
-//    }
-
-    
-}
-
-- (void)alertViewCancel:(UIAlertView *)alertView {
-    [self.taskTableView reloadData];
-}
-
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-
-
-//            [self.userTasksArray removeObjectAtIndex:];
-            [self.taskTableView reloadData];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Hold Up!" message:@"Are you sure you want to delete this item.  This can't be undone" delegate:self cancelButtonTitle:@"Delete" otherButtonTitles:@"Cancel", nil];
+        [alert show];
+    }
 }
 
 
-//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex indexPath:(NSIndexPath *)indexPath{
-//
-//    if (buttonIndex == 0){
-//
-//        [self.userTasksArray removeObjectAtIndex:indexPath.row];
-//        [self.taskTableView reloadData];
-//
-//    } else {
-//
-//        [self.taskTableView reloadData];
-//
-//    }
-//
-//
-//}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(buttonIndex == 0)//OK button pressed
+    {
+        [self.userTasksArray removeObjectAtIndex:self.indexPathToBeDeleted.row];
+        [self.taskTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:self.indexPathToBeDeleted] withRowAnimation:UITableViewRowAnimationFade];
+    } else {
+
+        [UIView transitionWithView:self.taskTableView
+                          duration:0.5f
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                        animations:^(void) {
+                            [self.taskTableView reloadData];
+                        } completion:NULL];
+    }
+}
+
 
 
 -(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -108,8 +89,6 @@
     [self.taskTableView reloadData];
 
 }
-
-///////
 
 
 - (IBAction)onAddButtonPressed:(UIButton *)sender {
@@ -161,7 +140,6 @@
         self.numberOfSwipesToRight = 0;
     }
 
-//    [self.taskTableView reloadData];
 
 }
 
