@@ -34,6 +34,42 @@
 
 }
 
+
+///////
+
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
+
+    forRowAtIndexPath:(NSIndexPath *)indexPath{
+    [self.userTasksArray removeObjectAtIndex:indexPath.row];
+    [self.taskTableView reloadData];
+    
+}
+
+
+
+
+-(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
+    NSString *titleItem = [self.userTasksArray objectAtIndex:sourceIndexPath.row];
+    [self.userTasksArray removeObject:titleItem];
+    [self.userTasksArray insertObject:titleItem atIndex:destinationIndexPath.row];
+
+
+    [self.taskTableView reloadData];
+
+}
+
+///////
+
+
 - (IBAction)onAddButtonPressed:(UIButton *)sender {
 
     self.userTask = [NSString stringWithFormat:@"%@", self.taskTextField.text];
