@@ -49,6 +49,10 @@
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="FgW-5j-FfH" appends="YES" id="NCl-wv-Gdr"/>
+                        </connections>
                     </view>
                     <navigationItem key="navigationItem" title="DeProcrastinor" id="xl3-yB-0eH">
                         <barButtonItem key="rightBarButtonItem" title="Edit" id="q6k-Qw-hpf">
@@ -63,6 +67,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="right" id="FgW-5j-FfH">
+                    <connections>
+                        <action selector="onSwipeToRight:" destination="vXZ-lx-hvc" id="zbc-ls-aYo"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="704" y="364"/>
         </scene>
